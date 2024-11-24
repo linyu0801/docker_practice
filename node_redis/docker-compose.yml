@@ -1,0 +1,9 @@
+version: '3' # Docker Compose version
+services:
+  redis-server:
+    image: 'redis' # 指定 image
+  node-app:
+    restart: always #  restart policy
+    build: . # 使用當前目錄中的 Dockerfile
+    ports:
+      - '4001:8081' # 前面有個 dash 是因為 YAML 聲明陣列的方式，port 表示 'local port:container port' ，第一個 port 是 local port，第二個 port 是 container port
