@@ -1,0 +1,29 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'frontend/**' # 只有變更 frontend/ 資料夾才觸發
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker login
+        working-directory: ./frontend
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        working-directory: ./frontend
+        run: docker build -t linyu0801/react-test -f Dockerfile.dev .
+
+      - name: Run tests
+        working-directory:
+          ./frontend
+          # -e CI=true，設定環境變數讓測試在 CI/CD 時不進入 watch mode
+        run: docker run -e CI=true linyu0801/react-test npm test
