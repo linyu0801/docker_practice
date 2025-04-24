@@ -10,20 +10,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - uses: actions/checkout@v2
 
       - name: Docker login
-        working-directory: ./frontend
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        working-directory: ./frontend
         run: docker build -t linyu0801/react-test -f Dockerfile.dev .
 
+        # -e CI=true，設定環境變數讓測試在 CI/CD 時不進入 watch mode
       - name: Run tests
-        working-directory:
-          ./frontend
-          # -e CI=true，設定環境變數讓測試在 CI/CD 時不進入 watch mode
         run: docker run -e CI=true linyu0801/react-test npm test
