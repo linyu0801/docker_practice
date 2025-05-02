@@ -29,6 +29,9 @@ jobs:
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
 
+      - name: Move zip to root for deployment
+        run: mv deploy.zip ../deploy.zip
+
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v18
         with:
@@ -38,5 +41,5 @@ jobs:
           environment_name: Frontend-env
           existing_bucket_name: elasticbeanstalk-us-east-1-695324433361
           region: us-east-1
-          version_label: ${{ github.sha }}
-          deployment_package: ./frontend/deploy.zip
+          version_label: frontend-${{ github.sha }}-${{ github.run_number }}
+          deployment_package: deploy.zip
