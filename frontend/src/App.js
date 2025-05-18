@@ -17,7 +17,7 @@ function App() {
         >
           Learn React!!~~
         </a>
-        <p>test github actions3</p>
+        <p>change on feature</p>
       </header>
     </div>
   );
